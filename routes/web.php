@@ -12,5 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.header');
 });
+
+Route::get('/pegawai', 'UserController@pegawai');
