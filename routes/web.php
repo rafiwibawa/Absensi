@@ -12,7 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('layouts.header');
+    return view('Dasboard.dasboard');
 });
 
 Route::get('/pegawai', 'UserController@pegawai');
+
+Route::get('/jabatan', 'UserController@jabatan');

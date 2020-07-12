@@ -11,4 +11,9 @@ class UserController extends Controller
     {
         return view('Pegawai.pegawai');
     }
+
+    public function jabatan()
+    {
+        return view('jabatan.jabatan');
+    }
 }
