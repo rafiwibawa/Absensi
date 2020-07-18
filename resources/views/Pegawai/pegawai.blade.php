@@ -7,43 +7,63 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Pegawai</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i>Tambah Pegawai</a>
+        <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#exampleModal">
+            <i class="fas fa-download fa-sm text-white-50"></i>Tambah Pegawai
+          </button>
     </div>
-
+    
     <!-- Content Row -->
     <div class="row">
         <div class="col-xl-12 ">
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Join Date</th>
+                        <th>Email</th>
+                        <th>Tempat Tgl lahir</th>
+                        <th>Alamat</th>
+                        <th>Barcode</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>@php $i=1 @endphp
+                    @foreach ($user as $user)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row">{{$i++}}</th>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->Jabatan['jabatan']}}</td>
+                        <td>{{$user->join_date}}</td>
+                        <td>{{$user->email}}</td>
+                        <td>{{$user->tempat_lahir}}, {{$user->tgl_lahir}}</td>
+                        <td>{{$user->alamat}}</td>
+                        <td>{{$user->barcode}}</td>
+                        <td>{{$user->created_at}}</td>
+                        <td>{{$user->updated_at}}</td>
+                        <td>
+                            <button type="button" data-id="{{$user->id}}" data-user="{{$user->name}}" data-toggle="modal" data-target="#edit"
+                                class="btn btn-warning btn-circle">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <a title="Hapus Data" href="jabatan/hapus/{{$user->id}}"
+                                onClick="return confirm('Yakin Ingin menghapus data?')"
+                                class="btn btn-danger btn-circle"><span class="fas fa-trash"></span></a>
+                            </a>
+                        </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    @include('Pegawai.modal')
     @endsection
+
+    
+    @push('script')
+        @include('Pegawai.script')
+    @endpush

@@ -13,44 +13,63 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('jabtan', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('jabatan');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+        
 
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('id_jabatan');
+            $table->Increments('id');
+            $table->unsignedInteger('id_jabatan')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('tgl_lahir');
-            $table->date('tempat_lahir');
+            $table->date('tgl_lahir');
+            $table->string('tempat_lahir');
+            $table->string('barcode')->unique();
             $table->string('alamat');
             $table->string('join_date');
-            $table->string('barcode');
             $table->rememberToken();
             $table->timestamps();
         });
-
+        Schema::create('jabatan', function (Blueprint $table) {
+            $table->Increments('id');
+            $table->string('jabatan');
+            $table->unsignedInteger('level')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+        });
         Schema::create('absen', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('id_karyawan');
+            $table->Increments('id');
+            $table->unsignedInteger('id_karyawan')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
         Schema::create('detail_absensi', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('id_absensi');
+            $table->Increments('id');
+            $table->unsignedInteger('id_absensi')->nullable();
             $table->dateTime('time_in');
-            $table->dateTime('time_out');
-            $table->dateTime('keterangan');
+            $table->dateTime('time_out')->nullable();
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::create('roles',function (Blueprint $table){
+            $table->Increments('id');
+            $table->string('namaRule');
+        });
+
+        Schema::table('jabatan', function (Blueprint $table) {
+            $table->foreign('level')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
+        });
+
+        Schema::table('absen', function (Blueprint $table){
+            $table->foreign('id_karyawan')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
+        Schema::table('users', function (Blueprint $table){
+            $table->foreign('id_jabatan')->references('id')->on('jabatan')->onDelete('cascade')->onUpdate('cascade');
+        });
+        Schema::table('detail_absensi', function (Blueprint $table){
+            $table->foreign('id_absensi')->references('id')->on('absen')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -62,5 +81,9 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('jabatan');
+        Schema::dropIfExists('absen');
+        Schema::dropIfExists('detail_absensi');
+        Schema::dropIfExists('roles');
     }
 }

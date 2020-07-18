@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id_jabaran','name', 'email', 'password','tgl_lahir','tempat_lahir','alamat','join_date','barcode',
+        'id_jabatan','name','email', 'barcode','password','tgl_lahir','tempat_lahir','alamat','join_date',
     ];
 
     /**
@@ -36,4 +36,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function Jabatan(){
+        return $this->belongsTo('App\Jabatan','id');
+    }
+
+    public function absensi(){
+        return $this->hasMany('\App\User','id_karyawan');
+    }
+
+    public function punyaRule($namaRule){
+        if($this->Jabatan->role->namaRule == $namaRule){
+            return true;
+        }
+        return false;
+    }
 }

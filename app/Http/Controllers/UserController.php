@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function pegawai()
+    public function __construct()
     {
-        return view('Pegawai.pegawai');
+        date_default_timezone_set("Asia/Jakarta");
+        $this->middleware('auth');
     }
 
-    public function jabatan()
-    {
-        return view('jabatan.jabatan');
-    }
 }
